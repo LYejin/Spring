@@ -12,7 +12,7 @@ public class program {
 			
 		//공통 코드
 		UserDao dao = new UserDao(new NConnectionMaker());
-		//각 벤더 마다 구현되는 클래스를 달리 하여야 한다
+		//각 벤더 마다 구현되는 클래스를 달리 하여야 한다 
 		
 				
 		User user = new User();
