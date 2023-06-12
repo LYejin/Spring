@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--
+객체의 생성과 조립(주입)
+
+spring 은 자신만의 컨테이너를 제공 (spring 전용 메모리 공간) 안에
+xml 또는 annotation를 통해서 객체를 생성하고 조립하는 과정을 수행 (객체간의 관계 설정)
+
+컨테이너 안에 생성돤 객체를 불러서 .... getbean() 함수
+
+:IOC 컨테이너 (제어의 역전)
+내가 주도했던 코드에서 Spring 이 주체 .....
+:작은 단위의 부품을 만들고 놓고 그 것을 조립하는 행위 (레고블럭)
+	
+JAVA 코드
+		ProtocolHandler handler = new ProtocolHandler();
+		
+		List<MyFilter> list = new ArrayList<MyFilter>();
+		list.add(new EncFilter());
+		list.add(new HeaderFilter());
+		list.add(new ZipFilter());
+		
+		handler.setFilter(list); //주소값 전달(의존성 주입)	
+	
+		1단계)
+		필요한 모든 bean 객체를 생성해라 (new 자원 >> bean 생성)
+		사용자가 직접 만들지 않은 클래스(JAVA API) >> Collection >> Spring 제공
+		>>xml 설정에서는 element 제공
+		>> <list>  , <map> , <set>
+		
+	
+-->
+<!--  
+		<bean id="encFilter"    class="DI_07_Spring.EncFilter"></bean>
+		<bean id="headerFilter" class="DI_07_Spring.HeaderFilter"></bean>
+		<bean id="zipFilter"    class="DI_07_Spring.ZipFilter"></bean>
+		
+		<bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+			<property name="filters">
+				<list> >>>list = new ArrayList
+					<ref bean="encFilter" />  >>>>list.add(new EncFilter())
+					<ref bean="headerFilter" />
+					<ref bean="zipFilter" />
+				</list>
+			</property>
+		</bean>
+-->		
+	<bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+		<property name="filters">
+			<list>
+				<bean class="DI_07_Spring.EncFilter" /> <!-- list.add(new EncFilter()) -->
+				<bean class="DI_07_Spring.HeaderFilter" />
+				<bean class="DI_07_Spring.ZipFilter" />
+			</list>
+		</property>
+	</bean>
+</beans>

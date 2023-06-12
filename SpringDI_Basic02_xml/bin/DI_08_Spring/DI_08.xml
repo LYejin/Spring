@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--
+객체의 생성과 조립(주입)
+
+spring 은 자신만의 컨테이너를 제공 (spring 전용 메모리 공간) 안에
+xml 또는 annotation를 통해서 객체를 생성하고 조립하는 과정을 수행 (객체간의 관계 설정)
+
+컨테이너 안에 생성돤 객체를 불러서 .... getbean() 함수
+
+:IOC 컨테이너 (제어의 역전)
+내가 주도했던 코드에서 Spring 이 주체 .....
+:작은 단위의 부품을 만들고 놓고 그 것을 조립하는 행위 (레고블럭)
+	
+JAVA 코드
+
+		JobExecute jobexecute = new JobExecute("hong", 100);
+		JobExecute jobexecute2 = new JobExecute("lim", 1000L);
+		JobExecute jobexecute3 = new JobExecute("lim", "hong");
+		
+		ArticleDao articledao = new ArticleDao();
+		jobexecute.setArticledao(articledao);
+	
+		jobexecute.setData(500);	
+	
+-->
+	<bean id="articleDao" class="DI_08_Spring.ArticleDao"></bean>
+	<bean id="jobExecute"  class="DI_08_Spring.JobExecute">
+		<constructor-arg>
+			<value>hong</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value type="long">100</value>
+		</constructor-arg>
+		
+		<property name="articledao">
+			<ref bean="articleDao" />
+		</property><!-- setter 구현하고 있는 member field -->
+		
+		<property name="data">
+			<value>500</value>
+		</property>
+	</bean>
+	<!-- 
+		xml 설정에서 타입을 명시하지 않은 값은 : 문자열 
+		타입 명시 가능 : <value type="int">100</value>
+	 -->
+
+</beans>

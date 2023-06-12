@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<!-- 
+		MonitorViewer viewer = new MonitorViewer();
+		Recorder recorder = new Recorder();
+		viewer.setRecorder(recorder);
+		System.out.println(viewer.getRecorder());
+ -->
+<!--  	
+<bean id="recorder" class="DI_Annotation_01.Recorder"></bean>
+ 	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer">
+ 		<property name="recorder">
+ 			<ref bean="recorder" />
+ 		</property>
+ 	</bean> 
+ -->
+ 	
+<!--  	
+	@Autowired(자동주입) > Type기반
+	목적 : 의존관계를 자동설정할 때 사용하며 [타입을 이용]하여 의존하는 객체를 삽입해 준다. 
+	그러므로 (IOC Container) 해당 타입의 빈객체가 존재하지 않거나 또는 2개 이상 존재할 경우 
+	스프링은 예외를 발생시키게 된다.
+	
+	설정 위치 : 생성자, 필드, 메소드(굳이 setter메소드가 아니여도 된다)
+	import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+	*추가설정 : AutowiredAnnotationBeanPostProcessor 클래스를 빈으로 등록시켜줘야 한다. 
+	해당 설정 대신에 <context:annotation-config> 태그를 사용해도 된다.
+	옵션 : required - 
+	@Autowired어노테이션을 적용한 프로퍼티에 대해 굳이 설정할 필요가 없는 경우에 
+	false값을 주며 이때 해당 프로퍼티가 존재하지 않더라도 스프링은 예외를 발생시키지 않는다. 디폴트값은 true
+	
+ 	<context:annotation-config />
+ 	**Annotation 사용에 필요한 모든 클래스를 한방에 컨테이너안에 생성합니다.
+ 	ex) @Autowired 사용 하려면 AutowiredAnnotationBeanPostProcessor 객체 선행되어서 빈으로 생성
+ 	** 장점 : 각각의 annotation에 대해서 일일이 선행 빈객체를 만들 필요 없다
+ 	** 단점 : 사용하지 않는 것도 선행 빈 객체도 등록한다 ... => 별로 성능에 영향을 주진 않는다
+ 	
+	>> aop jar 파일 추가
+	>> @Autowired 정상 동작하지 않는 경우
+	
+ 	1.  org.springframework.beans.factory.NoSuchBeanDefinitionException
+ 		injection 타입 객체가 IOC 컨테이너 안에 없다 ...
+ 		
+ 	2.  org.springframework.beans.factory.NoUniqueBeanDefinitionException
+ 			<bean id="a" class="DI_Annotation_01.Recorder" />
+			<bean id="b" class="DI_Annotation_01.Recorder" />
+			<bean id="c" class="DI_Annotation_01.Recorder" />
+			같은 타입의 빈객체가 여러개 있는 경우
+			
+	3. 여러개의 빈객체가 있어도(같은 타입) id 값이 setter 함수 parameter 명과 동일하면 자동 주입 성공
+	 -->
+	<context:annotation-config />
+	<bean id="recorder" class="DI_Annotation_01.Recorder"></bean>
+	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer" />
+	<bean id="a" class="DI_Annotation_01.Recorder" />
+	<bean id="b" class="DI_Annotation_01.Recorder" />
+	<bean id="c" class="DI_Annotation_01.Recorder" />
+</beans>
