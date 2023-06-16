@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 객체의 생성과 조립
+	
+	ApplicationContext context = new ClassPathXmlApplicationContext("DIConfig.xml");
+	컨테이너 생성 xml read 객체 생성 조립 ...
+	
+	Web에서는 ....
+	1. Tomcat 실행 (WAS 서버)
+	2. 클라이언트 요청 (hello.do ....) 
+	3. Spring <url-pattern>*.do</url-pattern> 설정에 따라서
+	3.1 DispatcherServlet 객체 생성 >> ** key point DispatcherServlet 가지고 놀 수 있는 IOC 컨테이너 자동 생성
+	3.2 그리고 ... spring-servlet.xml read >> IOC 컨테이너 >> 안에 객체 생성하고 주입
+	3.3 약속 : xml 생성시 *-servlet.xml >> 별칭 spring-servlet.xml 이러면 [자동]으로 설정파일로 인정
+	>><servlet-name>spring</servlet-name> 이름으로 파일이름...
+	4. 컨테이너 안에 객체가 생성되고 주입이 일어나요 ^^
+	5. hello.do 에 대해서 handler mapping 작업 (hello.do 요청이 있는지 찾음) >> 객체 찾음(어디서? container안) >> id="/hello.do" 이렇게 되어있음(아이디가 요청주소로 바뀜) >> 그 객체의 handleRequest를 실행(public ModelAndView handleRequest)
+	6. ModelAndView 사용 필요한 객체를 담고 뷰를 지정 리턴
+	7. DispatcherServlet 받아서 InternalResourceViewResolver 뷰의 완성을 요청 ...
+	8. view에게 ModelAndView 데이터 전달 출력
+	9. 응답
+	 -->
+	 
+	 <context:annotation-config />
+	 <!-- 모든 객체가 사용할 수 있는 공통 빈 -->
+	 <bean id="InternalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	<property name="prefix">
+	 		<value>/WEB-INF/views/</value>
+	 	</property>
+	 	<property name="suffix">
+	 		<value>.jsp</value>
+	 	</property>
+	 </bean>
+	 
+	 <!-- TEST_1 -->
+	 <bean id="HelloController" class="com.controller.HelloController"></bean>
+	 
+	 <!-- TEST_2 -->
+	 <!-- 
+	 	하나의 요청 주소 (같은 주소)
+	 	전송방식 : GET, POST
+	 	화면, 처리 결정 ...
+	  -->
+	  <bean class="com.controller.NewArticleController"></bean>
+	  <bean class="com.service.ArticleService"></bean>
+	  
+	  <!-- TEST_3 -->
+	  <bean class="com.controller.OrderController"></bean>
+	  
+	  <!-- TEST_4 -->
+	  <bean class="com.controller.SearchController"></bean>
+	  
+	  <!-- TEST_5 Cookie -->
+	  <bean class="com.controller.CookieController"></bean>
+	  
+	  <!-- TEST_6 파일 업로드 -->
+	  <!--  
+	
+			import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+			import org.springframework.web.multipart.commons.CommonsMultipartFile;
+	
+			CommonsMultipartFile 사용해서  업로드를 할려면 몇가지 기본 세팅
+	        
+	        CommonsMultipartResolver  : 업로드한 파일에 대한 정보 관리(크기 , 이름....)
+	
+			파일 처리 (의존 객체)
+			//C:\KOSA_IT\Spring\Framework\spring-framework-3.0.2.RELEASE-dependencies\org.apache.commons\com.springsource.org.apache.commons.fileupload\1.2.0
+			com.springsource.org.apache.commons.fileupload-1.2.0.jar
+			com.springsource.org.apache.commons.io-1.4.0.jar
+	
+			CommonsMultipartResolver  : 업로드한 파일에 정보 관리(크기 , 이름  , 중복이름 정책)
+		-->
+		
+		<!--
+			<property name="uploadTempDir" value="uploadTempDir"/>
+			<bean id="uploadTempDir" class="org.springframework.core.io.FileSystemResource">
+			<constructor-arg value="c:/temp/"/>
+			</bean>
+		-->
+		<bean class="com.controller.ImageController"></bean>
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="maxUploadSize" value="1048760" />
+			<property name="defaultEncoding" value="UTF-8" />
+		</bean>
+	  	
+</beans>
