@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- Root 공통빈 DB관련 작업 (드라이버 로딩 , 템플릿 객체) view 작업 (공통 UI) (internalResourceViewResolver) 
+		import org.springframework.jdbc.datasource.DriverManagerDataSource; import 
+		org.springframework.jdbc.core.JdbcTemplate; -->
+	<!-- 공통 DB작업  -->
+	<!--  
+	 <bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+	 	<property name="url"             value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+	 	<property name="username"        value="springuser"></property>
+	 	<property name="password"        value="1004"></property>
+	 </bean> 
+	--> 
+	<!-- 
+	log4j2 spy 기능 추가
+	property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
+	property name="url"             value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"
+	
+	<bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+	 	<property name="url"             value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" />
+	 	<property name="username"        value="springuser"></property>
+	 	<property name="password"        value="1004"></property>
+	 </bean> 
+	--> 
+	 <!-- 
+	 hikari POOL 만 사용 *****  배포
+	 <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+	 	<property name="jdbcUrl"         value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+	 	<property name="username"        value="springuser"></property>
+	 	<property name="password"        value="1004"></property>
+	 </bean> 
+	  <bean id="driverManagerDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+			<constructor-arg ref="hikariConfig"></constructor-arg>
+	 </bean>
+	 -->
+	
+	<!-- POOL + spy   개발과정에서 확인할 때-->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+	 	<property name="jdbcUrl"         value="jdbc:log4jdbc:oracle:thin:@localhost:49161:XE"></property>
+	 	<property name="username"        value="springuser"></property>
+	 	<property name="password"        value="1004"></property>
+	</bean> 
+	 
+	<bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+
+	<!-- JDBC Template -->
+	<bean id="" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="driverManagerDataSource" />
+	</bean>
+
+
+<!-- Mybatis 설정
+기본 자바코드 : SqlMapConfig.xml 에서 설정했던 작업 (DB연결 ,mapper 설정)
+파일 없어지고 설명파일안에서   > SqlSessionFactoryBean
+기존 java 코드 : builder 사용 > Factory 객체 > sqlsession 생성 > 함수사용 
+-->
+<bean id="sqlSessionFactoryBean"  class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="driverManagerDataSource"></property>
+    <property name="mapperLocations" value="classpath*:mapper/*xml" />
+</bean> 
+
+<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  <constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+</bean>
+<!-- Mybatis 설정  -->
+
+
+
+
+
+	<!-- 공통빈 -->
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+	<!-- 파일 업로드 보조(반드시)  -->
+	<bean  id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="maxUploadSize"    value="10485760"></property>
+			<property name="defaultEncoding"  value="UTF-8"></property>
+	</bean>	
+</beans>
+
+
+
+
+
+
+
+
+
+

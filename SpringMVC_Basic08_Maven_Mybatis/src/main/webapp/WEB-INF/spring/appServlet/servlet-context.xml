@@ -11,6 +11,7 @@
 <context:annotation-config />
 <context:component-scan base-package="ncontroller" />
 <context:component-scan base-package="dao" />
+<context:component-scan base-package="service" />
 
 
 </beans> 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.EmpDao" >
+	<!-- 전체조회 -->
+	<select id="getEmpList" resultType="vo.Emp">
+		select empno, ename, job, mgr, hiredate, sal, comm, deptno, filename from emp	
+	</select>
+	
+	<!-- 조건조회 -->
+	<select id="getEmp" resultType="vo.Emp">
+		select empno, ename, job, mgr, hiredate, sal, comm, deptno from emp where empno=#{empno}
+	</select>
+	
+	<!-- 삽입 -->
+	<insert id="insertEmp" parameterType="vo.Emp">
+		INSERT INTO EMP(empno, ename, job, mgr, hiredate, sal, comm, deptno)
+		VALUES(#{empno},#{ename},#{job},#{mgr},sysdate,#{sal},#{comm},#{deptno})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateEmp" parameterType="vo.Emp">
+		UPDATE EMP
+		SET empno = #{empno},
+		    ename = #{ename},
+			job = #{job},
+			mgr = #{mgr},
+			sal = #{sal},
+			comm = #{comm},
+			deptno = #{deptno}
+		WHERE empno = #{empno}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteEmp" parameterType="vo.Emp">
+		DELETE Emp WHERE EMPNO=#{empno}
+	</delete>
+</mapper>
