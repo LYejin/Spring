@@ -11,6 +11,7 @@
 		org.springframework.jdbc.core.JdbcTemplate; -->
 	<!-- 공통 DB작업  -->
 	<!--  
+	처음 pool(x) spy(x)
 	 <bean id="driverManagerDataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 	 	<property name="url"             value="jdbc:oracle:thin:@localhost:1521:xe"></property>
@@ -51,7 +52,7 @@
 	 	<property name="password"        value="1004"></property>
 	</bean> 
 	 
-	<bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+	<bean id="driverManagerDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig"></constructor-arg>
 	</bean>
 

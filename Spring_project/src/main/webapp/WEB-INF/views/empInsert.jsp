@@ -8,7 +8,7 @@
 </head>
 <body>
 	<form action="empinsert.htm" method="post">
-		<input type="submit" value="수정">
+		<input type="submit" value="등록">
 		<div>
 			<table>
 					<tr>
