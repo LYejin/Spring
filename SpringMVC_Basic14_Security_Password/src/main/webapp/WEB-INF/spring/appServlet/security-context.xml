@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+						http://www.springframework.org/schema/security/spring-security-4.0.xsd
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd">
+<!-- 
+1단계
+인증과 권한 처리 (in-momory) 방식 사용자를 만들고 권한 (role) TEST
+
+권한 (4.x.x)부터 access=hasRole() 함수 사용
+
+인증과 권한 사용(로그인 페이지와 처리 프로세스(코드) 를 정의하지 않아도 돼요
+>>login 페이지 loginok 페이지를 만들지 않아도 돼요
+>>spring 제공하는 Template 사용 ... (자동화)
+auto-config=true >> 모든 login 처리 프로세스 자동화
+
+<security:csrf>
+사이트 간 요청 위조 (Cross-site request forgery)
+
+사이트 간 요청 위조는 웹사이트 취약점 공격의 하나로, 
+사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위를 특정 웹사이트에 요청하게 하는 공격을 말한다. 
+유명 경매 사이트인 옥션에서 발생한 개인정보 유출 사건에서 사용된 공격 방식 중 하나다.
+
+ 
+ 	<security:http auto-config="true">
+ 		<security:csrf disabled="true"/>
+ 		<security:intercept-url pattern="/customer/noticeDetail.htm" access="hasRole('ROLE_USER')"/>
+ 		<security:intercept-url pattern="/customer/noticeReg.htm"    access="hasRole('ROLE_ADMIN')"/>
+ 	</security:http>
+ 	<security:authentication-manager>
+ 		<security:authentication-provider>
+ 			<security:user-service>
+ 				<security:user name="hong" password="1004" authorities="ROLE_USER"/>
+ 				<security:user name="admin" password="1004" authorities="ROLE_USER, ROLE_ADMIN"/>
+ 			</security:user-service>
+ 		</security:authentication-provider>
+ 	</security:authentication-manager>
+
+-->
+<!--   2단계 코드 
+   login 페이지 처리
+   
+>>form-login 속성 정의하기
+login-page : login form 페이지 URL
+username-parameter : form id의 name 속성값 (email >> id)
+password-parameter : form pw의 name 속성값
+login-processing-url : form action 값 (security를 이용해 인증처리)
+default-target-url : 로그인 성공 시 이동 URL
+authentication-failure-url : 로그인 실패 시 이동 URL
+always-use-default-target : true 로 하면 무조건 default-target-url 로 이동한다.
+false 로 하면 authentication-success-handler 대로 redirect 된다.
+authentication-success-handler-ref : 로그인 성공 시 프로세스 정의, bean id 입력
+만약 최종 로그인일시를 DB에 기록해야한다면 handler로 처리하는게 좋겠다.
+
+res.sendRedirect 등으로 처리
+authentication-failure-handler-ref : 로그인 실패 시 프로세스 정의, bean id 입력
+
+
+>> security:logout
+logout-url : 로그아웃 처리할 URL (security가 알아서 만들기 때문에, 이 경로로 요청만 하면된다)
+logout-success-url : 로그아웃 성공 시 이동 URL
+success-handler-ref : 로그아웃 성공 시 프로세스 정의, bean id 입력
+invalidate-session : 로그아웃 시 세션 삭제여부
+
+
+>>session-management
+invalid-session-url : invalid session(세션 타임아웃 등) 일 때 이동 URL
+max-sessions : 최대 허용 가능한 세션 수
+expired-url : 중복 로그인 발생시 이동 URL (처음 접속한 세션이 invalidate가 되고 다음 요청시 invalid-session-url로 이동)
+error-if-maximum-exceeded : max-sessions을 넘었을때 접속한 세션을 실패처리할지 여부 (expired-url와 얘중에 하나만 쓰면 될듯)
+​
+아래 처리 한다고 해서 
+login 처리 직접 하는 것은 아니다
+​
+**
+/login 요청 처리는 여전이 spring 위임하고 있다 .....
+기본적인 요청 주소 , parameter 값은 정해진 되로
+
+  	<security:http auto-config="true">
+ 		<security:csrf disabled="true"/>
+ 		<security:form-login login-page="/joinus/login.htm"
+ 							 default-target-url="/index.htm"
+ 							 authentication-failure-url="/joinus/login.htm?error"/>
+ 		<security:logout logout-success-url="/index.htm" />
+ 		
+ 		<security:intercept-url pattern="/customer/noticeDetail.htm" access="hasRole('ROLE_USER')"/>
+ 		<security:intercept-url pattern="/customer/noticeReg.htm"    access="hasRole('ROLE_ADMIN')"/>
+ 	</security:http>
+ 	<security:authentication-manager>
+ 		<security:authentication-provider>
+ 			<security:user-service>
+ 				<security:user name="hong" password="1004" authorities="ROLE_USER"/>
+ 				<security:user name="admin" password="1004" authorities="ROLE_USER, ROLE_ADMIN"/>
+ 			</security:user-service>
+ 		</security:authentication-provider>
+ 	</security:authentication-manager>
+  -->
+  
+  <!-- 3차 DB 연동하기 -->
+  	<security:http auto-config="true">
+ 		<security:csrf disabled="true"/>
+ 		<security:form-login login-page="/joinus/login.htm"
+		                     default-target-url="/index.htm"
+		                     authentication-failure-url="/joinus/login.htm?error" />
+		<security:logout     logout-success-url="/index.htm"/>
+		<security:intercept-url pattern="/customer/*Reg.htm" access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+ 	</security:http>
+ 	<security:authentication-manager>
+ 		<security:authentication-provider>
+ 			<security:jdbc-user-service data-source-ref="driverManagerDataSource"
+ 				users-by-username-query="SELECT USERID, pwd AS PASSWORD, 1 enabled FROM member where userid=?" 
+ 				authorities-by-username-query="select m.USERID , r.ROLE_NAME  
+								           		from member m join roll r 
+								           		on m.userid = r.userid 
+								           		where m.userid=?"
+ 				/>
+ 			<security:password-encoder ref="bCryptPasswordEncoder"/>
+ 		</security:authentication-provider>
+ 	</security:authentication-manager>
+</beans>
+
+
