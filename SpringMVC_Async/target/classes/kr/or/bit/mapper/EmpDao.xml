@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- int login(String userId, String userPw) int EmpTotal() int EmpSalAvg() 
+	int EmpJobTotal() int totallistCount() List<Emp> list(int cpage, int pagesize) 
+	List<Emp> ajaxList(int cpage, int pagesize) List<Emp> searchEmpno(String 
+	empno) List<Emp> searchEname(String ename) int insertEmp(long empno, String 
+	ename, String job, long mgr, String hiredate, long sal, long comm, long deptno, 
+	String filename) Date transformDate(String date) int deleteEmp(long empno) 
+	Emp detailList(Long empno) int updateOkEmp(long empno, String ename, String 
+	job, long mgr, String hiredate, long sal, long comm, long deptno, String 
+	filename) List<Emp> chartList() List<Emp> jobList() List<Emp> deptNoList() 
+	List<Emp> dataTablelist() String empFilename(Long empno) -->
+<mapper namespace="kr.or.bit.dao.EmpInterface">
+	<select id="login">
+
+	</select>
+
+	<select id="EmpTotal">
+		select count(*) from emp
+	</select>
+	<select id="EmpSalAvg">
+		select round(avg(sal),0) from emp
+	</select>
+	<select id="DeptTotal">
+		select count(distinct deptno) from emp
+	</select>
+	<select id="EmpJobTotal">
+		select count(distinct job) from emp
+	</select>
+	<select id="totallistCount">
+		select count(*) cnt from emp
+	</select>
+
+	<!-- parameter값으로 start end -->
+	<select id="list" parameterType="int" resultType="vo.Emp">
+<!-- 		select * from
+		(
+		select rownum rn, empno, ename, job, mgr, hiredate, sal, comm, deptno,
+		filename
+		from emp
+		where rownum <= ?
+		)
+		where rn >= ? -->
+	</select> -->
+	
+	<select id="ajaxList" parameterType="" resultType="vo.Emp">
+		select * from emp
+	</select>
+	<!-- comp -->
+	<select id="searchEmpno" parameterType="" resultType="vo.Emp">
+		select empno, ename, job, deptno, mgr, filename from emp where empno like
+		#{empno}
+	</select>
+	<!-- comp -->
+	<select id="searchEname" parameterType="" resultType="vo.Emp">
+		select empno, ename, job, deptno, mgr, filename from emp where ename like
+		#{ename}
+	</select>
+	<!-- comp -->
+	<insert id="insertEmp" parameterType="kr.or.bit.dto.Emp">
+		insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno,filename)
+		values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno},#{filename})
+	</insert>
+
+	<!-- transformDate Date 변경 메소드 -->
+	<select id=""></select>
+
+	<!-- comp -->
+	<delete id="deleteEmp" parameterType="long">
+		delete from emp where empno = #{empno}
+	</delete>
+	<!-- comp -->
+	<select id="detailList" resultType="vo.Emp" parameterType="long">
+		select * from emp where empno = #{empno}
+	</select>
+	<update id="updateOkEmp" parameterType="vo.Emp">
+		update emp set ename = #{ename}, job = #{job}, mgr = #{mgr}, hiredate =
+		#{hiredate}, sal = #{sal}, comm = #{comm}, deptno = #{deptno},
+		filename = #{filename} WHERE empno = #{empno}
+	</update>
+
+	<select id="chartList" resultType="vo.Emp">
+		select job , avg(sal)*12 sar\r\n" + "select distinct job from empfrom
+		emp\r\n" +
+		"group by job\r\n" + "order by sar desc
+	</select>
+
+	<select id="jobList" resultType="vo.Emp">
+		select distinct job from emp
+	</select>
+
+	<select id="deptNoList" resultType="vo.Emp">
+		select distinct deptno from emp order by deptno asc
+	</select>
+
+	<select id="dataTablelist" resultType="vo.Emp">
+		select * from emp
+	</select>
+
+	<select id="empFilename" parameterType="Long">
+		select filename from emp where empno = #{empno}
+	</select>
+</mapper>

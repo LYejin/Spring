@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.bit.dao.EmpDao">
+
+
+<select id="login" resultType="int">
+	select pwd from adminlist where userid=#{param1}
+</select>
+
+<select id="EmpTotal" resultType="int">
+	select count(*) from emp
+</select>
+
+<select id="EmpSalAvg" resultType="int">
+	select round(avg(sal),0) from emp
+</select>
+
+<select id="DeptTotal" resultType="int">
+	select count(distinct deptno) from emp
+</select>
+
+<select id="EmpJobTotal" resultType="int">
+	select count(distinct job) from emp
+</select>
+<select id="totallistCount" resultType="int">
+	select count(*) cnt from emp
+</select>
+
+<select id="elist" resultType="kr.or.bit.dto.Emp">
+  <![CDATA[
+    SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno, filename
+    FROM emp
+    ORDER BY empno
+    OFFSET #{param1} ROWS FETCH NEXT #{param2} ROWS ONLY
+  ]]>
+</select>
+
+<select id="searchEmpno" resultType="kr.or.bit.dto.Emp">
+  <![CDATA[
+  SELECT empno, ename, job, deptno, mgr, filename
+  FROM emp
+  WHERE empno LIKE '%' || #{empno} || '%'
+  ]]>
+</select>
+
+
+<select id="searchEname" resultType="kr.or.bit.dto.Emp">
+  <![CDATA[
+  SELECT empno, ename, job, deptno, mgr, filename
+  FROM emp
+  WHERE ename LIKE '%' || #{ename} || '%'
+  ]]>
+</select>
+
+<select id="jobList" resultType="kr.or.bit.dto.Emp">
+	select distinct job from emp
+</select>
+
+<select id="deptNoList" resultType="kr.or.bit.dto.Emp">
+	select distinct deptno from emp order by deptno asc
+</select>
+
+
+<insert id="insertEmp">
+  INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno, filename)
+  VALUES (
+    #{param1},
+    #{param2},
+    #{param3},
+    #{param4},
+    #{param5, jdbcType=DATE},
+    #{param6},
+    #{param7},
+    #{param8},
+    #{param9}
+  )
+</insert>
+
+
+<delete id="deleteEmp" parameterType="java.lang.Long">
+  DELETE FROM emp
+  WHERE empno = #{empno}
+</delete>
+
+<select id="detailList" resultType="kr.or.bit.dto.Emp">
+	select * from emp where empno = #{empno}
+</select>
+
+
+
+</mapper>
+
+
+
+
+

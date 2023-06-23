@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.bit.dao.EmpInterface">
+	<select id="login" resultType="int">
+		select pwd from adminlist where userid=#{param1}
+	</select>
+
+	<select id="totallistCount" resultType="int">
+		select count(*) cnt from
+		emp
+	</select>
+
+	<select id="list" resultType="kr.or.bit.dto.Emp">
+		  <![CDATA[
+			select * from
+			(
+			select rownum rn, empno, ename, job, mgr, hiredate, sal, comm, deptno, filename
+			from emp
+			where rownum <= #{param2}
+			)
+			where rn >= #{param1}
+		  ]]>
+	</select>
+
+	<insert id="insertEmp" parameterType="kr.or.bit.dto.Emp">
+		insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno)
+		values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno})
+	</insert>
+
+	<update id="updateOkEmp" parameterType="kr.or.bit.dto.Emp">
+		update emp set ename = #{ename}, job = #{job}, mgr = #{mgr}, hiredate =
+		#{hiredate}, sal = #{sal}, comm = #{comm}, deptno = #{deptno},
+		filename = #{filename} WHERE empno = #{empno}
+	</update>
+	
+	<delete id="deleteEmp">
+		delete from emp where empno = #{empno}
+	</delete>
+</mapper>

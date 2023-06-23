@@ -48,7 +48,6 @@ public class CustomerController {
 		return "customer/noticeReg";
 	}
 	
-
 	@PostMapping(value="noticeReg.htm")  
 	public String noticeReg(Notice n , HttpServletRequest request) {
 		 String url= null;

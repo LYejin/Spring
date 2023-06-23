@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- int login(String userId, String userPw) int EmpTotal() int EmpSalAvg()
+	int EmpJobTotal() int totallistCount() List<Emp> list(int cpage, int pagesize)
+	List<Emp> ajaxList(int cpage, int pagesize) List<Emp> searchEmpno(String
+	empno) List<Emp> searchEname(String ename) int insertEmp(long empno, String
+	ename, String job, long mgr, String hiredate, long sal, long comm, long deptno,
+	String filename) Date transformDate(String date) int deleteEmp(long empno)
+	Emp detailList(Long empno) int updateOkEmp(long empno, String ename, String
+	job, long mgr, String hiredate, long sal, long comm, long deptno, String
+	filename) List<Emp> chartList() List<Emp> jobList() List<Emp> deptNoList()
+	List<Emp> dataTablelist() String empFilename(Long empno) -->
+<mapper namespace="kr.or.bit.dao.EmpInterface">
+	
+	<select id="empList" resultType="kr.or.bit.dto.Emp">
+		select empno,ename,job,mgr,hiredate,sal,comm,deptno,filename from emp
+	</select>
+<!--  comp-->
+	<insert id="insertAccount" parameterType="vo.Emp">
+	insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno,filename)
+	values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno},#{filename})
+	</insert>
+	
+	<update id="updateEmp" parameterType="vo.Emp">
+	update emp set ename = #{ename}, job = #{job}, mgr = #{mgr}, hiredate = #{hiredate}, sal = #{sal}, comm = #{comm}, deptno = #{deptno}, filename = #{filename} WHERE empno = #{empno}
+	</update>
+
+</mapper>
