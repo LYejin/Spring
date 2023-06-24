@@ -1,12 +1,14 @@
 package kr.or.bit.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +62,30 @@ public class AjaxController {
 			return new ResponseEntity<String>("delete sucess", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("delete fail", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping("/jobList")
+	public ResponseEntity<List<String>> jobList() {
+		List<String> list = new ArrayList<String>();
+		try {
+			System.out.println("jobList 실행");
+			list = empservice.joblist();
+			return new ResponseEntity<List<String>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<List<String>>(list, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping("/deptnoList")
+	public ResponseEntity<List<Long>> deptnoList() {
+		List<Long> list = new ArrayList<Long>();
+		try {
+			System.out.println("deptnoList 실행");
+			list = empservice.deptnolist();
+			return new ResponseEntity<List<Long>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<List<Long>>(list, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

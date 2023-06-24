@@ -52,13 +52,40 @@ public class EmpService {
 	public List<Emp> list(int cpage, int pagesize) {
 		EmpInterface empdao = sqlsession.getMapper(EmpInterface.class);
 		List<Emp> emplist = null;
+		System.out.println(cpage+ " " + pagesize);
+		int start = cpage * pagesize - (pagesize - 1); // 1*5 -(5-1) = 1
+		int end = cpage * pagesize;
 		try {
-			emplist = empdao.list(cpage, pagesize);
+			emplist = empdao.list(start, end);
 		} catch (Exception e) {
 			e.getStackTrace();
 			System.out.println("listService : " + e.getMessage());
 		}
 		return emplist;
+	}
+	
+	public List<String> joblist() {
+		EmpInterface empdao = sqlsession.getMapper(EmpInterface.class);
+		List<String> joblist = null;
+		try {
+			joblist = empdao.jobList();
+		} catch (Exception e) {
+			e.getStackTrace();
+			System.out.println("joblistService : " + e.getMessage());
+		}
+		return joblist;
+	}
+	
+	public List<Long> deptnolist() {
+		EmpInterface empdao = sqlsession.getMapper(EmpInterface.class);
+		List<Long> deptnolist = null;
+		try {
+			deptnolist = empdao.deptnoList();
+		} catch (Exception e) {
+			e.getStackTrace();
+			System.out.println("joblistService : " + e.getMessage());
+		}
+		return deptnolist;
 	}
 	
 	public int deleteEmp(long empno) {
@@ -84,8 +111,8 @@ public class EmpService {
 //			String fpath = path + "\\" + filename;
 //			System.out.println("fpath" + fpath);
 //
-//			emp.setSal(Long.parseLong(Long.toString(emp.getSal()).replaceAll(",", "")));
-//			emp.setComm(Long.parseLong(Long.toString(emp.getComm()).replaceAll(",", "")));
+			emp.setSal(Long.parseLong(Long.toString(emp.getSal()).replaceAll(",", "")));
+			emp.setComm(Long.parseLong(Long.toString(emp.getComm()).replaceAll(",", "")));
 //
 //			if (!filename.equals("")) { // 실제 파일 업로드
 //				FileOutputStream fs = null;

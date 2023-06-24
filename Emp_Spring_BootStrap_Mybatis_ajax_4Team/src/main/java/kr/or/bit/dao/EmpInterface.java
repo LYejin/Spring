@@ -23,8 +23,8 @@ public interface EmpInterface {
 	Emp detailList(Long empno) throws ClassNotFoundException, SQLException;
 	int updateOkEmp(Emp emp) throws ClassNotFoundException, SQLException;
 	List<Emp> chartList() throws ClassNotFoundException, SQLException;
-	List<Emp> jobList() throws ClassNotFoundException, SQLException;
-	List<Emp> deptNoList() throws ClassNotFoundException, SQLException;
+	List<String> jobList() throws ClassNotFoundException, SQLException;
+	List<Long> deptnoList() throws ClassNotFoundException, SQLException;
 	List<Emp> dataTablelist() throws ClassNotFoundException, SQLException;
 	String empFilename(Long empno) throws ClassNotFoundException, SQLException;
 }
