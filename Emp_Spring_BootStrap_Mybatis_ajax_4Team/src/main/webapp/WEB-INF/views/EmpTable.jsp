@@ -1,6 +1,4 @@
 
-<%@page import="kr.or.bit.action.Action"%>
-<%@page import="kr.or.bit.service.EmpListService"%>
 <%@page import="kr.or.bit.dto.Emp"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"

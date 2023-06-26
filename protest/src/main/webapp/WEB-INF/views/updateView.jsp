@@ -93,8 +93,8 @@
 				<div class="mb-3">
 				<!-- src="upload/emp.jpg"  -->
 						<label for="title">사진 수정</label> <br> 
-			 		<img id="preview" src="upload/${emp.filename}" width="300" alt="로컬에 있는 이미지가 보여지는 영역">	
-					<input type="file" id="fileName" name="fileName" class="fileName" accept="image/*">
+			 		<img id="preview" src="${pageContext.request.contextPath}\\${emp.filename}" width="300" alt="로컬에 있는 이미지가 보여지는 영역">	
+					<input type="file" id="fileName" name="fileName" class="fileName" accept="image/*" value="${pageContext.request.contextPath}">
 					</div>
 				
 				<div class="mb-3">

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 
 <html>
@@ -62,6 +62,7 @@
 <c:set var="emp" value="${requestScope.emp}" />
 <c:set var="hiredateformat" value="${emp.hiredate}"/>
 <c:set var="hiredateformat2" value="${fn:replace(hiredateformat, '-', '')}" />
+<c:set var="hiredateformat3" value="${fn:substring(hiredateformat2,0,8)}" />
 	
 	
       <div class="breadcrumbs">
@@ -87,16 +88,14 @@
 	<article>
 		<div class="container" role="main">
 			<h2>사원 수정</h2>
-			<form name="form" id="form" role="form" method="post" 
-				action="updateok.do?type=${type}" enctype="multipart/form-data">
+			<form name="form" id="form" role="form" method="post" action="updateok.do" enctype="multipart/form-data">
 				
 				<div class="mb-3">
 				<!-- src="upload/emp.jpg"  -->
 						<label for="title">사진 수정</label> <br> 
 			 		<img id="preview" src="upload/${emp.filename}" width="300" alt="로컬에 있는 이미지가 보여지는 영역">	
-					<input type="file" id="fileName" name="fileName" class="fileName" accept="image/*">
+					<input type="file" id="fileName" name="file" class="fileName" accept="image/*">
 					</div>
-				
 				<div class="mb-3">
 					<label for="title">사원 번호</label> <input type="text"
 						class="form-control" name="empno" id="empno"
@@ -131,14 +130,14 @@
 				<div class="mb-3">
 					<label for="reg_id">입사일</label> <input type="text"
 						class="form-control" name="hiredate" id="datepicker"
-						   value="${hiredateformat2}">
+						   value="${hiredateformat3}">
 
 				</div>
 				
 				<div class="mb-3">
 					<label for="reg_id">급여</label> <input type="text"
 						class="form-control" name="sal" id="sal"
-						value="${emp.sal}">
+						value="${fn:replace(emp.sal, ',', '')}">
 				</div>
 				<div class="mb-3">
 					<label for="reg_id">커미션</label> <input type="text"
@@ -189,7 +188,17 @@
 	
 	$(document).on('click', '#btnSave', function(e) {
 		e.preventDefault();
+		var sal = $('#sal').val();
+		$('#sal').val(sal.replace(/[^\d]+/g, ""));
+
+		var comm = $('#comm').val();
+		$('#comm').val(comm.replace(/[^\d]+/g, ""));
+		
 		$("#form").submit();
+	});
+	
+	$('#datepicker').datepicker({
+		dateFormat : "yymmdd"
 	});
 	
 	$(document)
@@ -236,41 +245,42 @@
 		dateFormat: "yymmdd"
 	});
   	
-  	$.ajax({
-		url : "jobList.do",
+	$.ajax({
+		url : "emp/jobList",
 		type : 'POST',
 		dataType : "json",
 		success : function(data) {
-			$.each(data, function(i){
-				console.log(i + " / " + data[i])
-				if($("#selectBox option:selected").val() != data[i]){
-					
-				
-				 $("#selectBox").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
-				}
-				});  
+			console.log(data);
+			$.each(data, function(i) {
+				console.log(i + " / " + data[i]);
+				$("#selectJobBox").append(
+						"<option value='"+data[i]+"'>" + data[i]
+								+ "</option>")
+			});
 		},
-		 error:function(request,status,error){
-			    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		 }
+		error : function(request, status, error) {
+			console.log("code:" + request.status + "\n" + "message:"
+					+ request.responseText + "\n" + "error:" + error);
+		}
 	});
 	
 	$.ajax({
-		url : "deptNoList.do",
+		url : "emp/deptnoList",
 		type : 'POST',
 		dataType : "json",
 		success : function(data) {
-			$.each(data, function(i){
+			$.each(data, function(i) {
 				console.log(i + " / " + data[i])
-					if($("#selectBox2 option:selected").val() != data[i]){
-				 $("#selectBox2").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
-					}
-				});  
+				$("#selectDeptnoBox").append(
+						"<option value='"+data[i]+"'>" + data[i]
+								+ "</option>")
+			});
 		},
-		 error:function(request,status,error){
-			    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		 }
-		
+		error : function(request, status, error) {
+			console.log("code:" + request.status + "\n" + "message:"
+					+ request.responseText + "\n" + "error:" + error);
+		}
+
 	});
 
 

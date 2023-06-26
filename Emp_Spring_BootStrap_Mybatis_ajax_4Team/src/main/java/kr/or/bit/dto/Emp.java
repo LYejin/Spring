@@ -1,6 +1,5 @@
 package kr.or.bit.dto;
 
-import java.util.Date;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -9,7 +8,7 @@ public class Emp {
 	private String ename;
 	private String job;
 	private long mgr;
-	private Date hiredate;
+	private String hiredate;
 	private long sal;
 	private long comm;
 	private long deptno;
@@ -66,11 +65,11 @@ public class Emp {
 		this.mgr = mgr;
 	}
 
-	public Date getHiredate() {
+	public String getHiredate() {
 		return hiredate;
 	}
 
-	public void setHiredate(Date hiredate) {
+	public void setHiredate(String hiredate) {
 		this.hiredate = hiredate;
 	}
 

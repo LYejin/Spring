@@ -47,6 +47,7 @@
 		<property name="viewName" value="index"></property>
 	</bean>
 	
+<!-- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/> -->
 	<!-- <bean name="jsonview" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" /> -->
 	
 </beans>

@@ -22,6 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where rn >= #{param1}
 		  ]]>
 	</select>
+	
+	<select id="detailList" resultType="kr.or.bit.dto.Emp">
+		select empno,ename,job,mgr,hiredate,sal,comm,deptno,filename from emp where empno=#{param1}
+	</select>
 
 	<insert id="insertEmp" parameterType="kr.or.bit.dto.Emp">
 		INSERT INTO emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) VALUES(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno})
@@ -29,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="updateOkEmp" parameterType="kr.or.bit.dto.Emp">
 		update emp set ename = #{ename}, job = #{job}, mgr = #{mgr}, hiredate =
-		#{hiredate}, sal = #{sal}, comm = #{comm}, deptno = #{deptno} WHERE empno = #{empno}
+		#{hiredate}, sal = #{sal}, comm = #{comm}, deptno = #{deptno}, filename=#{filename} WHERE empno = #{empno}
 	</update>
 	
 	<delete id="deleteEmp">
